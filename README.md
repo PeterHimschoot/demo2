@@ -8,6 +8,4 @@ Other stuff;
 
 A
 
-B
-
 C
