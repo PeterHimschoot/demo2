@@ -3,3 +3,5 @@
 ## More stuff
 
 Peter's changes && Some text
+
+Other stuff;
