@@ -1,0 +1,51 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "storageType": {
+            "type": "string",
+            "defaultValue":"StorageV2",
+            "allowedValues":[
+                "StorageV2",
+                "FileStorage"
+            ],
+            "metadata": {
+                "description": "Storage account type"
+            }
+        }
+    },
+    "functions": [],
+    "variables": {
+        "saname": "[concat('sa', uniqueString(resourceGroup().id))]",
+        "sku": {
+            "name":"Premium_LRS",
+            "tier":"Premium"
+        }
+    },
+    "resources": [
+        {
+            "name": "[variables('saname')]",
+            "type": "Microsoft.Storage/storageAccounts",
+            "apiVersion": "2023-04-01",
+            "tags": {
+                "displayName": "[variables('saname')]"
+            },
+            "location": "[resourceGroup().location]",
+            "kind": "[parameters('storageType')]",
+            "sku": {
+                "name": "[variables('sku').name]",
+                "tier": "[variables('sku').tier]"
+            }
+        }
+    ],
+    "outputs": {
+        "saname": {
+            "type": "string",
+            "value": "[variables('saname')]"
+        },
+        "bloburl": {
+            "type": "string",
+            "value": "[reference(resourceId('Microsoft.Storage/storageAccounts', variables('saname'))).PrimaryEndpoints.blob]"
+        }
+    }
+}
